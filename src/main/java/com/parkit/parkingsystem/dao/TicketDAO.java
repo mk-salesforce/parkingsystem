@@ -86,4 +86,29 @@ public class TicketDAO {
         }
         return false;
     }
+    
+    public int getOcc(String vehicleRegNumber) {
+		Connection con = null;
+		int occ = 0;
+		try {
+
+			con = dataBaseConfig.getConnection();
+			PreparedStatement ps = con.prepareStatement(DBConstants.GET_OCC_VEHICLE);
+
+			ps.setString(1, vehicleRegNumber);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				occ = rs.getInt("Occurence");
+			}
+			dataBaseConfig.closeResultSet(rs);
+			dataBaseConfig.closePreparedStatement(ps);
+
+		} catch (Exception ex) {
+
+		} finally {
+			dataBaseConfig.closeConnection(con);
+
+		}
+		return occ;
+	}
 }
